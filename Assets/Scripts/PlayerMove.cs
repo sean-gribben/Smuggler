@@ -29,8 +29,8 @@ public class PlayerMove : MonoBehaviour
         Debug.DrawLine(_camera.position, transform.forward * 2.5f);
 
         //moving
-        float x = Input.GetAxisRaw("Horizontal") * moveSpeed;
-        float y = Input.GetAxisRaw("Vertical") * moveSpeed;
+        float x = Input.GetAxisRaw("Horizontal") * moveSpeed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1);
+        float y = Input.GetAxisRaw("Vertical") * moveSpeed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1);
 
         //jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
