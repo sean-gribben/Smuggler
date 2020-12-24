@@ -42,4 +42,13 @@ public class PlayerMove : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
     }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        
+        if (Vector3.Dot(hit.moveDirection, Vector3.up) > 0.95f) {
+            Debug.Log("t");
+            playerVelocity.y = 0;
+        }
+    }
 }
