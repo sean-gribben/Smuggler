@@ -31,7 +31,7 @@ public class PlayerMove : MonoBehaviour
         }
 
         Vector3 move =  transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical");
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        controller.Move(move * Time.deltaTime * playerSpeed * (Input.GetKey(KeyCode.LeftShift) ? 1.4f : 1f));
 
         // Changes the height position of the player..
         if (Input.GetButtonDown("Jump") && groundedPlayer)
