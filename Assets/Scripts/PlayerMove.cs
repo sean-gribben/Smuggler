@@ -4,41 +4,42 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    public Rigidbody rb;
-    public Transform _camera;
+    private CharacterController controller;
+    private Vector3 playerVelocity;
+    private bool groundedPlayer;
+    public float playerSpeed = 2.0f;
+    public float jumpHeight = 3.0f;
+    public float gravityValue = -9.81f;
 
-    public float moveSpeed = 6f;
-    public float jumpForce = 10f;
-
-    public LayerMask Ground;
-
-    bool isGrounded;
-
-    void Start()
+    private void Start()
     {
-
+        controller = gameObject.GetComponent<CharacterController>();
     }
 
     void Update()
     {
-        //grounding
-        isGrounded = Physics.CheckSphere(new Vector3(transform.position.x, transform.position.y - 1, transform.position.z), 0.4f, Ground);
+        groundedPlayer = controller.isGrounded;
+        if (!groundedPlayer)
+        {
+            controller.stepOffset = 0f;
+        }
+        
 
+        if (groundedPlayer && playerVelocity.y < 0)
+        {
+            playerVelocity.y = -2f;
+        }
 
-        //facing direction
-        Debug.DrawLine(_camera.position, transform.forward * 2.5f);
+        Vector3 move =  transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical");
+        controller.Move(move * Time.deltaTime * playerSpeed);
 
-        //moving
-        float x = Input.GetAxisRaw("Horizontal") * moveSpeed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1);
-        float y = Input.GetAxisRaw("Vertical") * moveSpeed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1);
+        // Changes the height position of the player..
+        if (Input.GetButtonDown("Jump") && groundedPlayer)
+        {
+            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+        }
 
-        //jumping
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
-
-        //setting movement
-        Vector3 move = transform.right * x + transform.forward * y;
-
-        rb.velocity = new Vector3(move.x, rb.velocity.y, move.z);
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        controller.Move(playerVelocity * Time.deltaTime);
     }
 }
