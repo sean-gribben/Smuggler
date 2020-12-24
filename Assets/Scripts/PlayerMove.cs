@@ -47,7 +47,6 @@ public class PlayerMove : MonoBehaviour
     {
         
         if (Vector3.Dot(hit.moveDirection, Vector3.up) > 0.95f) {
-            Debug.Log("t");
             playerVelocity.y = 0;
         }
     }
