@@ -6,13 +6,14 @@ public class PlayerLook : MonoBehaviour
 {
     public Transform player;
 
-    public float sensitivity = 10;
+    public float sensitivity;
 
     float x = 0;
     float y = 0;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        sensitivity = 10 * PlayerPrefs.GetFloat("sensitivty", 1);
     }
 
     void Update()
